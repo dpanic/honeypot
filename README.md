@@ -12,9 +12,10 @@ Minimalistic application level honeypot server.
 
 
 # Install
-1. python3 -m pip install -r requirements.txt
 
-2. Activate in supervisor (or in some other similar software) following code:
+There are no external dependencies.
+
+1. Activate in supervisor (or in some other similar software) following code:
 
 ```
 [program:honeypot]
