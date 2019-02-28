@@ -1,7 +1,8 @@
-**README**
-Minimalistic honeypot server. 
+# README
+Minimalistic application level honeypot server. 
 
-Features:
+
+## Features:
 - HTTP default answer
 - Process big file and extract intel
 - SMTP support [ % ]
@@ -10,8 +11,12 @@ Features:
 
 
 
-**INSTALL**
-1. Activate in supervisor following code:
+# Install
+1. python3 -m pip install -r requirements.txt
+
+2. Activate in supervisor (or in some other similar software) following code:
+
+```
 [program:honeypot]
 command=/usr/bin/python3 -B honeypot.py
 
@@ -26,6 +31,8 @@ startsecs=10
 stopwaitsecs=600
 killasgroup=true
 priority=1000
+```
 
 
-
+# Cron jobs
+0 */1 * * * /bin/bash /home/user/honeypot/devops/processor.sh
