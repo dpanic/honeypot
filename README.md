@@ -3,12 +3,14 @@ Minimalistic application level honeypot server.
 
 
 ## Features:
-- HTTP default answer
+- HTTP support
 - Process big file and extract intel
+
+## Todo list:
 - SMTP support [ % ]
 - DNS support [ % ]
 - Listen on multiple ports [ % ]
-
+- Docker [ % ]
 
 
 # Install

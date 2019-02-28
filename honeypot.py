@@ -30,8 +30,6 @@ class HoneyPot:
         logger.dump('HoneyPot v1', 'debug')
 
         # configuration part
-        
-        # concurent users
         self.max_threads = config.c['max_threads']
         self.listen_port = config.c['listen_port']
         self.max_live_time = 0
