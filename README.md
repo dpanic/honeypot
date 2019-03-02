@@ -3,10 +3,10 @@ Minimalistic application level honeypot server.
 
 
 ## Features:
-- HTTP support
-- Process big file and extract intel
+- Support for HTTP protocol
+- Support for SMTP protocol
+- Process big file and generate analytics
 - Listen on multiple ports
-- SMTP support
 
 
 ## Todo list:
