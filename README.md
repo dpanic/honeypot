@@ -5,16 +5,15 @@ Minimalistic application level honeypot server.
 ## Features:
 - HTTP support
 - Process big file and extract intel
+- Listen on multiple ports
+- SMTP support
+
 
 ## Todo list:
-- SMTP support [ % ]
 - DNS support [ % ]
-- Listen on multiple ports [ % ]
-- Docker [ % ]
 
 
 # Install
-
 There are no external dependencies.
 
 1. Activate in supervisor (or in some other similar software) following code:
@@ -38,4 +37,37 @@ priority=1000
 
 
 # Cron jobs
-0 */1 * * * /bin/bash /home/user/honeypot/devops/processor.sh
+0 */1 * * * /bin/bash /app/processor.sh
+
+
+
+
+# Docker
+Running docker:
+
+1. **Build**: 
+```
+docker build -t ubuntu_18_04_python3 .
+```
+
+2. **Run**: 
+```
+docker run -p 2525:25 -p 5353:53 -p 8080:80 -p 4443:443 --name honeypot_instance --restart=always -d -t ubuntu_18_04_python3
+```
+
+3. **Bash (if you need)**: 
+```
+docker exec -i -t honeypot_instance /bin/bash
+```
+
+4. **Stop and remove**:
+```
+docker stop honeypot_instance
+docker rm honeypot_instance 
+docker rmi ubuntu_18_04_python3
+```
+
+5. **Logs**
+```
+docker logs -f honeypot_instance
+```

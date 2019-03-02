@@ -1,0 +1,1 @@
+0 */1 * * * /bin/bash /app/devops/processor.sh 

@@ -9,8 +9,13 @@ try:
 except:
     import _thread as thread
 
+__DIR__ = os.path.dirname(os.path.realpath(__file__))
+sys.path.insert(0, __DIR__)
+sys.path.insert(0, __DIR__ + '/../')
 
-from includes import logger
+
+
+import logger
 
 
 class writer:
