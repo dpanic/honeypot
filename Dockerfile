@@ -22,6 +22,6 @@ RUN rm -rf /var/lib/apt/lists/*
 
 
 
-EXPOSE 25 465 587 53/udp 53/tcp 80 443 8080
+EXPOSE 25 465 587 53/udp 53/tcp 80 443
 
 CMD cron && python3 honeypot.py

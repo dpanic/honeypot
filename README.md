@@ -10,6 +10,7 @@ Minimalistic application level honeypot server.
 
 
 ## Todo list:
+- Separate stats per protocols [ % ]
 - DNS support [ % ]
 
 
@@ -47,13 +48,21 @@ Running docker:
 
 1. **Build**: 
 ```
-docker build -t ubuntu_18_04_python3 .
+docker build -t honeypot .
 ```
 
 2. **Run**: 
+
 ```
-docker run -p 2525:25 -p 5353:53 -p 8080:80 -p 4443:443 --name honeypot_instance --restart=always -d -t ubuntu_18_04_python3
+docker run -p 2525:25 -p 5353:53 -p 8080:80 -p 4443:443 --name honeypot_instance --restart=always -d -t honeypot
 ```
+
+or 
+
+```
+docker run -p 8080:80 --name honeypot_instance -d -t honeypot
+```
+
 
 3. **Bash (if you need)**: 
 ```
@@ -64,7 +73,7 @@ docker exec -i -t honeypot_instance /bin/bash
 ```
 docker stop honeypot_instance
 docker rm honeypot_instance 
-docker rmi ubuntu_18_04_python3
+docker rmi honeypot
 ```
 
 5. **Logs**

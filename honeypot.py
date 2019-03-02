@@ -80,9 +80,9 @@ class HoneyPot:
                     # getting class
                     klass = getattr(mod, module_name) 
                     instance = klass()
-                    ports = instance.get_ports()
+                    prefs = instance.get_preferences()
 
-                    for port in ports:
+                    for port in prefs['ports']:
                         self.ref_protocols[port] = klass()
                 except:
                     logger.dump('load_protocols(): %s > %s' %(module_name, str(sys.exc_info())), 'critical')
@@ -99,6 +99,24 @@ class HoneyPot:
 
         datas = b''
         ts_start = time.time()
+
+        # router - before user input
+        response_on_connect = False
+        try:
+            prefs = self.ref_protocols[port].get_preferences()
+            response_on_connect = prefs['response_on_connect']
+        except:
+            pass
+
+
+        if response_on_connect == False:
+            try:
+                self.ref_protocols[port].route(datas, connection, addr)
+            except:
+                print(str(sys.exc_info()))
+                logger.dump('no port %s handler! implement protocol!' %(port), 'critical')
+
+
         while True:
             diff = time.time() - ts_start
 
@@ -122,16 +140,19 @@ class HoneyPot:
             except socket.timeout:
                 logger.dump('socket timeout!', 'warning')
 
+            except: 
+                logger.dump('[ %s | response_on_connect = %s ] client(%s): %s' %(port, response_on_connect, str(addr), str(sys.exc_info())), 'error')
+                break
+
+
+
+        # router - after user input
+        if response_on_connect == True:
+            try:
+                self.ref_protocols[port].route(datas, connection, addr)
             except:
-                logger.dump('client(%s): %s' %(str(addr), str(sys.exc_info())), 'error')
-
-
-        # router
-        try:
-            self.ref_protocols[port].route(datas, connection, addr)
-        except:
-            print(str(sys.exc_info()))
-            logger.dump('no port %s handler! implement protocol!' %(port), 'critical')
+                print(str(sys.exc_info()))
+                logger.dump('no port %s handler! implement protocol!' %(port), 'critical')
 
 
         try:
@@ -175,7 +196,7 @@ class HoneyPot:
 
         try:
             s.bind((host, port))
-        except PermissionError:
+        except:
             logger.dump('%s:%s error listening!' %(host, port), 'warning')
             try:
                 s.close()

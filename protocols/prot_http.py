@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 import os
 import sys
+import time
 
 __DIR__ = os.path.dirname(os.path.realpath(__file__))
 sys.path.insert(0, __DIR__)
@@ -17,17 +18,22 @@ class prot_http:
 
 
     def __init__(self):
-        pass
+        self.preferences = {
+            'ports': [
+                80,
+                443,
+                8080,
+            ],
+            
+            'response_on_connect': True,
+            'wait_user_input': True,
+        }
 
     #
     # Get ports associated
     #
-    def get_ports(self):
-        return [
-            80,
-            443,
-            8080,
-        ]
+    def get_preferences(self):
+        return self.preferences
 
 
     #
@@ -57,6 +63,25 @@ class prot_http:
         if is_existing == True:
             connection.sendall(b'\r\n')
 
+            stat = os.stat(config.c['report_file'])
+            print(stat)
+
+            dts_created = stat.st_ctime
+
+            dts_created = time.localtime(dts_created)
+            dts_created = time.strftime("%B %d, %Y %H:%M:%S %z (%Z)", dts_created)
+
+            dts_modified = stat.st_mtime
+            print(dts_modified)
+            dts_modified = time.localtime(dts_modified)
+            dts_modified = time.strftime("%B %d, %Y %H:%M:%S %z (%Z)", dts_modified)
+
+            dts_created = dts_created.encode('utf-8')
+            dts_modified = dts_modified.encode('utf-8')
+
+
+            print(dts_modified)
+
             f = open(config.c['report_file'], 'r')
 
             content = f.read()
@@ -65,6 +90,9 @@ class prot_http:
             header = b'** HONEYPOT STATS **\r\n'
             rows = content.count(b'\n')
             header += b'rows: %d\r\n' %(rows)
+            header += b'created: %s\r\n' %(dts_created)
+            header += b'modified: %s\r\n' %(dts_modified)
+
             header += b'\r\n'
             
             body = header + content
@@ -93,7 +121,9 @@ class prot_http:
             connection.sendall(b':)')
             connection.sendall(b'\r\n')
 
-            connection.close()
+
+            if self.preferences['wait_user_input'] == False:
+                connection.close()
 
         except:
             pass

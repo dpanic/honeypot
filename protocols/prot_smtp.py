@@ -17,17 +17,22 @@ class prot_smtp:
 
 
     def __init__(self):
-        pass
+        self.preferences = {
+            'ports': [
+                25,
+                465,
+                587,
+            ],
+            
+            'response_on_connect': True,
+            'wait_user_input': True,
+        }
 
     #
     # Get ports associated
     #
-    def get_ports(self):
-        return [
-            25,
-            465,
-            587,
-        ]
+    def get_preferences(self):
+        return self.preferences
 
 
     #
@@ -46,7 +51,8 @@ class prot_smtp:
             connection.sendall(b'220 smtp.gmail.com ESMTP f6sm175797wrs.45 - gsmtp\r\n')
             connection.sendall(b'\r\n')
 
-            connection.close()
+            if self.preferences['wait_user_input'] == False:
+                connection.close()
 
         except:
             pass
